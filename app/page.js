@@ -30,6 +30,7 @@ import { howItWorks } from "@/data/howItWorks";
 import { useTheme } from "next-themes";
 import InteractiveBackground from "@/components/Background";
 import HeroSection from "@/components/Herosection";
+import HeroStats from "@/components/HeroStats";
 import ScrollToTop from "@/components/ui/Scrolltotop";
 
 
@@ -93,21 +94,8 @@ const isDarkMode = resolvedTheme === "dark";
       {/* ───────────────  STATS  ────────────── */}
       <section className="w-full  py-12 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
-          <motion.div
-            {...fadeUp()}
-            className="mx-auto grid max-w-4xl grid-cols-2 gap-8 text-center md:grid-cols-4"
-          >
-            {[
-              ["50+", "Industries Covered"],
-              ["1000+", "Interview Questions"],
-              ["95%", "Success Rate"],
-              ["24/7", "AI Support"],
-            ].map(([value, label]) => (
-              <div key={label} className="flex flex-col items-center space-y-2">
-                <h3 className="text-4xl font-bold">{value}</h3>
-                <p className="text-muted-foreground">{label}</p>
-              </div>
-            ))}
+          <motion.div {...fadeUp()}>
+            <HeroStats />
           </motion.div>
         </div>
       </section>
