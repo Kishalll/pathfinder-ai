@@ -137,6 +137,14 @@ export default function Header() {
                   <GraduationCap className="h-4 w-4" />
                   Interview Prep
                 </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => go("/ai-assistant")}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <Bot className="h-4 w-4" />
+                  AI Assistant
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </SignedIn>
