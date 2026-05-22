@@ -55,11 +55,20 @@ export function EntryForm({ type, entries, onChange }) {
     error: improveError,
   } = useFetch(improveWithAI);
 
-  // Sync improved description from useFetch hook data safely
+  // Core Fix: Safely unwrap server response object types to prevent [object Object] rendering
   useEffect(() => {
     if (improvedDescription) {
-      setValue("description", improvedDescription);
-      toast.success("Description updated and polished with AI insights!");
+      if (improvedDescription.success === true) {
+        setValue("description", improvedDescription.data);
+        toast.success("Description updated and polished with AI insights!");
+      } else {
+        // Fallback for action-layer structural error responses
+        const backendError = 
+          improvedDescription.errors?._form?.[0] || 
+          improvedDescription.errors?.current?.[0] || 
+          "AI configuration rejected input optimization parameters.";
+        toast.error(backendError);
+      }
     }
     if (improveError) {
       toast.error(improveError.message || "Failed to improve description.");
@@ -93,7 +102,7 @@ export function EntryForm({ type, entries, onChange }) {
         {entries.map((item, index) => (
           <div
             key={index}
-            className="flex items-start justify-between p-3 border rounded-lg bg-muted/40 relative group"
+            className="flex items-start justify-between p-3 border rounded-lg bg-muted/40 relative group focus-within:ring-1 focus-within:ring-ring"
           >
             <div>
               <p className="font-semibold text-sm">
@@ -109,11 +118,12 @@ export function EntryForm({ type, entries, onChange }) {
                 </p>
               )}
             </div>
+            {/* Core Fix: Added focus-visible and group-focus-within properties to ensure button pops up for keyboard navigation */}
             <Button
               type="button"
               variant="ghost"
               size="icon"
-              className="h-7 w-7 text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
+              className="h-7 w-7 text-destructive opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 focus-visible:opacity-100 transition-opacity focus:outline-none focus:ring-2 focus:ring-destructive"
               onClick={() => handleRemove(index)}
             >
               <X className="h-4 w-4" />
